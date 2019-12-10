@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.edu.ifsul.loja.activity.SobreActivity">
+
+    <TextView
+        android:id="@+id/tv_title_sobre"
+        android:layout_width="270dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/tv_title_sobre"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_sobre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_sobre"
+        android:layout_width="319dp"
+        android:layout_height="541dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="fill"
+        android:text="Loja Este projeto é desenvolvido na disciplina de PDM, do curso de Tecnologia em Sistema para Internet, IFSul, campus Pelotas (RS - Brasil). O intuito é que ele sirva de fonte de inspiração para os alunos desenvolver, durante o semestre letivo, seu próprio aplicativo em API nativa (Java) do Android, com os serviços do Firebase como backend. É exigida a entrega em três módulos, bem como, alguns desafios, como, a realização de sing up (Authentication), validação de email, e ativação e tratamento do serviço de mensagens push (Cloud Messaging). Outros serviços, como, Storage, são trabalhados no desenvolver de cada módulo. Esse projeto está propositalmente incompleto. A versão completa do projeto é encontrada no github dos alunos da disciplina, já que eles avançam no projeto ao desenvolver e entregar cada módulo. A construção de apps com API nativa está descontinuada. A partir de 2020/1 os projetos serão desenvolvidos em React Native."
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>

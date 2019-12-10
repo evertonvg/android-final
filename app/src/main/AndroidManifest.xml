@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.edu.ifsul.loja">
+    <!-- Para o leitor de código de barras -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="loja"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="br.edu.ifsul.loja.activity.CriarUsuarioActivity"
+            android:label="Cadastrar Usuário"
+            android:parentActivityName="br.edu.ifsul.loja.activity.LoginActivity" />
+        <activity android:name="br.edu.ifsul.loja.activity.UsuarioAdmUpdateActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.PedidosActivity"
+            android:label="Pedidos"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ClienteAdminActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.UsuarioAdminActivity"
+            android:label="Usuários - Adm"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutosActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.ClienteAdminActivity"
+            android:label="Clientes - Adm"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutosActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.ProdutoAdminActivity"
+            android:label="Produtos - Adm"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutosActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.SobreActivity"
+            android:label="Sobre o Vendas Java"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutosActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.ClientesActivity"
+            android:label="Clientes"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutoDetalheActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.CarrinhoActivity"
+            android:label="Carrinho"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutosActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.ProdutoDetalheActivity"
+            android:label="Detalhe do Produto"
+            android:parentActivityName="br.edu.ifsul.loja.activity.CarrinhoActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.ProdutosActivity"
+            android:label="Produtos"
+            android:parentActivityName="br.edu.ifsul.loja.activity.ProdutoDetalheActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.UsuariosActivity"
+            android:label="Usuários Cadastrados"
+            android:parentActivityName="br.edu.ifsul.loja.activity.UsuarioAdminActivity" />
+        <activity
+            android:name="br.edu.ifsul.loja.activity.LoginActivity"
+            android:label="loja">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="br.edu.ifsul.loja.barcode.BarcodeCaptureActivity"
+            android:label="Leitor de BarCode" />
+    </application>
+
+</manifest>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:title="@string/tv_vendas_group">
+            <menu>
+                <item
+                    android:id="@+id/nav_carrinho"
+                    android:icon="@drawable/ic_cart_2_48"
+                    android:title="@string/menu_nav_carrinho" />
+                <item
+                    android:id="@+id/nav_clientes"
+                    android:icon="@drawable/ic_group_48"
+                    android:title="@string/menu_nav_lista_de_clientes" />
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/admGroup"
+            android:title="@string/tv_adm_group"
+            android:visible="false">
+            <menu>
+                <item
+                    android:id="@+id/nav_produto_adminstracao"
+                    android:icon="@drawable/ic_product_48"
+                    android:title="@string/menu_nav_produto_admin" />
+                <item
+                    android:id="@+id/nav_cliente_administracao"
+                    android:icon="@drawable/ic_contacts_48"
+                    android:title="@string/menu_nav_cliente_admin" />
+                <item
+                    android:id="@+id/nav_usuario_administracao"
+                    android:icon="@drawable/ic_group_add_black_24dp"
+                    android:title="@string/menu_nav_usuario_admin" />
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/tv_app_group">
+            <menu>
+                <item
+                    android:id="@+id/nav_sobre"
+                    android:icon="@drawable/ic_report_3_48"
+                    android:title="@string/menu_nav_sobre" />
+                <item
+                    android:id="@+id/nav_sair"
+                    android:icon="@drawable/ic_door_8_48"
+                    android:title="@string/menu_nav_sair" />
+            </menu>
+        </item>
+    </group>
+
+</menu>
