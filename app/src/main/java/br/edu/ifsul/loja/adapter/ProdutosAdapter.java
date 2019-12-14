@@ -1,5 +1,4 @@
 package br.edu.ifsul.loja.adapter;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,40 +13,31 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.text.NumberFormat;
 import java.util.List;
-
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
-
 
 public class ProdutosAdapter extends ArrayAdapter<Produto> {
 
     private final String TAG = "produtosadapter";
     private final Context context;
     private Bitmap fotoEmBitmap;
-
     public ProdutosAdapter(@NonNull Context context, @NonNull List<Produto> produtos) {
         super(context, 0, produtos);
         this.context = context;
     }
 
     @SuppressLint("SetTextI18n")
-    @SuppressWarnings("StatementWithEmptyBody")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        //declara o objeto que irá segurar os objetos escaneados da view
         final ViewHolder holder;
-        //infla a view
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_produto_adapter, parent, false);
             holder = new ViewHolder(convertView);
@@ -56,7 +46,6 @@ public class ProdutosAdapter extends ArrayAdapter<Produto> {
             holder = (ViewHolder) convertView.getTag(); //pega da view o holder
         }
 
-        //vincula os dados do objeto de modelo à view
         final Produto produto = getItem(position); //devolve o objeto do modelo
         holder.tvNome.setText(produto.getNome());
         holder.tvEstoque.setText(produto.getQuantidade().toString());
@@ -66,7 +55,6 @@ public class ProdutosAdapter extends ArrayAdapter<Produto> {
         if(produto.getUrl_foto().equals("")){
             holder.pbFotoProduto.setVisibility(ProgressBar.INVISIBLE);
         }else{
-            //faz o download do servidor
             if(AppSetup.cacheProdutos.get(produto.getKey()) == null){
                 StorageReference mStorageRef = FirebaseStorage.getInstance().getReference("images/produtos/" + produto.getCodigoDeBarras() + ".jpeg");
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -90,14 +78,9 @@ public class ProdutosAdapter extends ArrayAdapter<Produto> {
                 holder.pbFotoProduto.setVisibility(ProgressBar.INVISIBLE);
             }
         }
-
         return convertView;
     }
 
-    /*
-        A classe ViewHolder irá segurar os objetos escaneados da view (isso acelera o
-        processamento dos cartões).
-     */
     private class ViewHolder {
 
         final TextView tvNome;
@@ -116,4 +99,4 @@ public class ProdutosAdapter extends ArrayAdapter<Produto> {
         }
     }
 
-}//fim classe
+}

@@ -1,5 +1,4 @@
 package br.edu.ifsul.loja.adapter;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,14 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.text.NumberFormat;
 import java.util.List;
-
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.model.ItemPedido;
 import br.edu.ifsul.loja.setup.AppSetup;
@@ -36,9 +32,7 @@ public class CarrinhoAdapter extends ArrayAdapter<ItemPedido> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         final ViewHolder holder;
-
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_carrinho_adapter, parent, false);
             holder = new ViewHolder(convertView);
@@ -47,7 +41,6 @@ public class CarrinhoAdapter extends ArrayAdapter<ItemPedido> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //bindview
         final ItemPedido item = getItem(position);
         holder.nomeProduto.setText(item.getProduto().getNome());
         holder.quantidade.setText(item.getQuantidade().toString());
@@ -72,16 +65,13 @@ public class CarrinhoAdapter extends ArrayAdapter<ItemPedido> {
         }
         return convertView;
     }
-
     private class ViewHolder{
         TextView nomeProduto;
         TextView quantidade;
         TextView totalDoItem;
         ImageView fotoProduto;
         ProgressBar pbFoto;
-
         public ViewHolder(View convertView){
-            //mapeia os componentes da UI para vincular os dados do objeto de modelo
             nomeProduto = convertView.findViewById(R.id.tvNomeProdutoCarrinhoAdapter);
             quantidade = convertView.findViewById(R.id.tvdata_pedido);
             totalDoItem =  convertView.findViewById(R.id.tvTotalItemCarrinhoAdapter);

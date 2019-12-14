@@ -1,12 +1,10 @@
 package br.edu.ifsul.loja.activity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +27,6 @@ import br.edu.ifsul.loja.setup.AppSetup;
 
 
 public class ProdutoDetalheActivity extends AppCompatActivity {
-
     private static final String TAG = "produtoDetalheActivity";
     private TextView tvNome, tvDescricao, tvValor, tvEstoque;
     private EditText etQuantidade;
@@ -42,8 +39,6 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_detalhe);
-
-        //mapeia os componentes da UI
         tvNome = findViewById(R.id.tvNomeProdutoAdapter);
         tvDescricao = findViewById(R.id.tvDerscricaoProduto);
         tvValor = findViewById(R.id.tvValorProduto);
@@ -52,14 +47,8 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         imvFoto = findViewById(R.id.imvFoto);
         btVender = findViewById(R.id.btComprarProduto);
 
-        //obtém a position anexada como metadado
         final Integer position = getIntent().getExtras().getInt("position");
         produto = AppSetup.produtos.get(position);
-        Log.d(TAG, "Output State: "+ produto.equals(AppSetup.produtos.get(position)));
-
-        Log.d(TAG, "Position: "+ position);
-
-        //bindview
         tvNome.setText(AppSetup.produtos.get(position).getNome());
         tvDescricao.setText(AppSetup.produtos.get(position).getDescricao());
         tvValor.setText(NumberFormat.getCurrencyInstance().format(AppSetup.produtos.get(position).getValor()));
@@ -67,15 +56,12 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         if(produto.getUrl_foto().equals("")){
             imvFoto.setImageResource(R.drawable.img_carrinho_de_compras);
         }else{
-            //carrega a imagem do serviço Storage aqui
-            //aqui virá a imagem
+
         }
 
-        // obtém a referência do database e do nó
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("produtos/" + produto.getKey() + "/quantidade");
 
-        // Escuta o database
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,27 +88,16 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                     }else{
                         Integer quantidade = Integer.valueOf(etQuantidade.getText().toString());
                         if(quantidade <= produto.getQuantidade()){
-
-                            //concretiza a venda
                             ItemPedido itemPedido = new ItemPedido();
                             itemPedido.setProduto(produto);
                             itemPedido.setQuantidade(quantidade);
                             itemPedido.setTotalItem(quantidade * produto.getValor());
-                            //itemPedido.setTotalItem(AppSetup.produtos.get(position).getValor() * itemPedido.getQuantidade());
                             itemPedido.setSituacao(true);
-
                             AppSetup.carrinho.add(itemPedido);
-
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef2 = database.getReference("produtos/" + produto.getKey() + "/quantidade");
-
                             myRef2.setValue(AppSetup.produtos.get(position).getQuantidade() - itemPedido.getQuantidade());
-
-
                             Toast.makeText(ProdutoDetalheActivity.this, "Item adicionado ao carrinho", Toast.LENGTH_SHORT).show();
-
-                            //startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));
-
                             startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));
                             finish();
                         }else{

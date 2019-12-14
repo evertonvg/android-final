@@ -1,5 +1,4 @@
 package br.edu.ifsul.loja.activity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,10 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.barcode.BarcodeCaptureActivity;
 import br.edu.ifsul.loja.model.Produto;
@@ -44,7 +40,6 @@ import br.edu.ifsul.loja.setup.AppSetup;
 
 
 public class ProdutoAdminActivity extends AppCompatActivity {
-
     private static final String TAG = "produtoAdminActivity";
     private static final int RC_BARCODE_CAPTURE = 1, RC_GALERIA_IMAGE_PICK = 2;
     private EditText etCodigoDeBarras, etNome, etDescricao, etValor, etQuantidade;
@@ -63,17 +58,9 @@ public class ProdutoAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_admin);
-
-        //ativa o botão home na actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //obtém a instância do database
         database = FirebaseDatabase.getInstance();
-
-        //inicializa o objeto de modelo
         produto = new Produto();
-
-        //mapeia os componentes da UI
         etCodigoDeBarras = findViewById(R.id.etCodigoProduto);
         etNome = findViewById(R.id.etNomeProdutoAdmin);
         etDescricao = findViewById(R.id.etDescricaoProdutoAdmin);
@@ -83,21 +70,14 @@ public class ProdutoAdminActivity extends AppCompatActivity {
         imvFoto = findViewById(R.id.imvFoto);
         imbPesquisar = findViewById(R.id.imb_pesquisar);
         pbFoto = findViewById(R.id.pb_foto_produto_admin);
-
-        //busca a foto do produto na galeria
         imvFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //cria uma Intent
-                //primeiro argumento: ação ACTION_PICK "pegar algum dado"
-                //segundo argumento: refina a ação para arquivos de fotoProduto, na galeria do dispositivo, retornando um URI
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                //inicializa uma Activity esperando o seu resultado. Neste caso, uma que forneca acesso a galeria de imagens do dispositivo.
                 startActivityForResult(Intent.createChooser(intent,getString(R.string.titulo_janela_galeria_imagens)), RC_GALERIA_IMAGE_PICK);
             }
         });
 
-        //pesquisa se o produto já está cadastrado no database
         imbPesquisar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +87,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
             }
         });
 
-        //salva o produto no database
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +95,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
                         !etDescricao.getText().toString().isEmpty() &&
                         !etValor.getText().toString().isEmpty() &&
                         !etQuantidade.getText().toString().isEmpty() ){
-                    //prepara o objeto de modelo
                     Long codigoDeBarras = Long.valueOf(etCodigoDeBarras.getText().toString());
                     produto.setCodigoDeBarras(codigoDeBarras);
                     produto.setNome(etNome.getText().toString());
@@ -141,7 +119,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
     }
 
     private void uploadFotoDoProduto() {
-        //faz o upload da foto do produto no firebase storage
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference("images/produtos/" + produto.getCodigoDeBarras() + ".jpeg");
         UploadTask uploadTask = mStorageRef.putBytes(fotoProduto);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -161,7 +138,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
 
     private void salvarProduto(){
         if(flagInsertOrUpdate){//insert
-            // obtém a referência do database
             DatabaseReference myRef = database.getReference("/produtos");
             Log.d(TAG, "Barcode = " + produto.getCodigoDeBarras());
             Query query = myRef.orderByChild("codigoDeBarras").equalTo(produto.getCodigoDeBarras()).limitToFirst(1);
@@ -174,8 +150,8 @@ public class ProdutoAdminActivity extends AppCompatActivity {
                     }else{
                         showWait();
                         DatabaseReference myRef = database.getReference("/produtos");
-                        produto.setKey(myRef.push().getKey()); //cria o nó e devolve a key
-                        myRef.child(produto.getKey()).setValue(produto) //salva o produto no database
+                        produto.setKey(myRef.push().getKey());
+                        myRef.child(produto.getKey()).setValue(produto)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -267,7 +243,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    //Toast.makeText(this, barcode.displayValue, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
                     etCodigoDeBarras.setText(barcode.displayValue);
                     buscarNoBanco(Long.valueOf(barcode.displayValue));
@@ -294,7 +269,6 @@ public class ProdutoAdminActivity extends AppCompatActivity {
     }
 
     private void buscarNoBanco(Long codigoDeBarras) {
-        // obtém a referência do database
         DatabaseReference myRef = database.getReference("/produtos");
         Log.d(TAG, "Barcode = " + codigoDeBarras);
         Query query = myRef.orderByChild("codigoDeBarras").equalTo(codigoDeBarras).limitToFirst(1);
@@ -315,7 +289,7 @@ public class ProdutoAdminActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Se ocorrer um erro
+
             }
         });
     }
@@ -354,22 +328,15 @@ public class ProdutoAdminActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Converte um Bitmap em um array de bytes (bytes[])
-     * @param bitmap
-     * @return byte[]
-     */
+
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //criam um stream para ByteArray
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream); //comprime a fotoProduto
-        return outputStream.toByteArray(); //retorna a fotoProduto como um Array de Bytes (byte[])
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+        return outputStream.toByteArray();
     }
 
-    /*Emite uma ProgressDialog
-      Uma caixa com uma mensagem de progressão e uma barra de progressão
-    */
     public void  showWait(){
-        //cria e configura a caixa de diálogo e progressão
+
         mProgressDialog = new ProgressDialog(ProdutoAdminActivity.this);
         mProgressDialog.setMessage(getString(R.string.message_processando));
         mProgressDialog.setIndeterminate(true);
@@ -377,9 +344,8 @@ public class ProdutoAdminActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
-    //Faz Dismiss na ProgressDialog
     public void dismissWait(){
         mProgressDialog.dismiss();
     }
 
-}//fim classe
+}

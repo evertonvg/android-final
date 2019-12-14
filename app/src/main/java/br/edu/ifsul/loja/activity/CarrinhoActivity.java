@@ -13,19 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.adapter.CarrinhoAdapter;
 import br.edu.ifsul.loja.model.ItemPedido;
@@ -33,51 +30,36 @@ import br.edu.ifsul.loja.model.Pedido;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
 
-//import android.R;
-
-
 public class CarrinhoActivity extends AppCompatActivity {
     private ListView lv_carrinho;
     private TextView tvClienteCarrinho;
     private TextView tvTotalPedidoCarrinho;
-    public int i;
     private Double valorTotal = new Double(0);
     private List<ItemPedido> itens;
     private Produto produto;
     private ItemPedido itemPedido;
+    public int item;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_carrinho);
-
         lv_carrinho = findViewById(R.id.lv_carrinho);
-
         tvClienteCarrinho = findViewById(R.id.tvClienteCarrinho);
         tvTotalPedidoCarrinho = findViewById(R.id.tvTotalPedidoCarrinho);
         tvClienteCarrinho.setText(String.valueOf("Cliente: " + AppSetup.cliente.getNome().concat(" " + AppSetup.cliente.getSobrenome())));
-
-        //tvClienteCarrinho.setText("Cliente: " + AppSetup.cliente.getNome() + " " + AppSetup.cliente.getSobrenome());
-
         lv_carrinho.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 adExcluirItem("Atenção", "Você deseja excluir esse item?", position);
-
-                //Toast.makeText(CarrinhoActivity.this, "Click para remover", Toast.LENGTH_SHORT).show();
-
                 return true;
             }
         });
-
         lv_carrinho.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editaItem(position, "Editar item?", "Você deseja editar o item?");
-
-                //Toast.makeText(CarrinhoActivity.this, "Click para editar", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -85,9 +67,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
         getMenuInflater().inflate(R.menu.menu_activity_carrinho, menu);
-
         return true;
     }
 
@@ -106,27 +86,17 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void editaItem(final int position, String titulo, String mensagem){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setTitle(titulo);
         builder.setMessage(mensagem);
-
         builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 atualizaEstoque(position);
-
                 Intent intent = new Intent(CarrinhoActivity.this, ProdutoDetalheActivity.class);
                 int index = AppSetup.carrinho.get(position).getProduto().getIndex();
-                //Log.d("OUTPUT: ", "Valor do index: " +  index);
-
                 intent.putExtra("position", index);
-
                 startActivity(intent);
-
                 AppSetup.carrinho.remove(position);
-
-                //Toast.makeText(CarrinhoActivity.this, "Click para atualizar", Toast.LENGTH_SHORT).show();
-
                 finish();
             }
         });
@@ -134,64 +104,47 @@ public class CarrinhoActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.alertdialog_nao, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //por enquanto nada
             }
         });
-
         builder.show();
     }
 
     private void atualizaView(){
         lv_carrinho.setAdapter(new CarrinhoAdapter(CarrinhoActivity.this, AppSetup.carrinho));
-
         valorTotal = new Double(0);
-
         for(ItemPedido itemPedido : AppSetup.carrinho){
             valorTotal += itemPedido.getTotalItem();
         }
-
         tvTotalPedidoCarrinho.setText(NumberFormat.getCurrencyInstance().format(valorTotal));
     }
 
     private void atualizaEstoque(final int position){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("produtos/").child(itens.get(position).getProduto().getKey()).child("quantidade");
-
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //referencia da posição do estoque
                 long quantidade = (long) dataSnapshot.getValue();
-
                 myRef.setValue(itens.get(position).getQuantidade() + quantidade);
-
                 atualizaView();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
     private void adSalvarPedido(String titulo, String mensagem){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(titulo);
-        builder.setMessage(mensagem);
-
-        builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(titulo);
+                builder.setMessage(mensagem);
+                builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //referencia do banco
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("pedidos/");
-
                 String data = geraData();
-
                 Pedido pedido = new Pedido();
-
                 pedido.setFormaDePagamento("espécie");
                 pedido.setEstado("aberto");
                 pedido.setDataCriacao(data);
@@ -200,15 +153,10 @@ public class CarrinhoActivity extends AppCompatActivity {
                 pedido.setSituacao(true);
                 pedido.setItens(AppSetup.carrinho);
                 pedido.setCliente(AppSetup.cliente);
-
-                //salva no db
                 myRef.push().setValue(pedido);
-
                 AppSetup.carrinho.clear();
                 AppSetup.cliente = null;
-
                 Toast.makeText(CarrinhoActivity.this, "Vendido com sucesso!", Toast.LENGTH_SHORT).show();
-
                 finish();
             }
         });
@@ -219,59 +167,47 @@ public class CarrinhoActivity extends AppCompatActivity {
                 Toast.makeText(CarrinhoActivity.this, "Venda cancelada!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
         builder.show();
     }
 
     private void adCancelarPedido(String titulo, String mensagem){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(titulo);
-        builder.setMessage(mensagem);
-
-        builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(titulo);
+                builder.setMessage(mensagem);
+                builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 for(int j = 0; j < itens.size(); j++){
-                    atualizaEstoque(i);
+                    atualizaEstoque(item);
                 }
-
                 AppSetup.carrinho.clear();
                 AppSetup.cliente = null;
-
                 Toast.makeText(CarrinhoActivity.this, "Pedido cancelado!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
-
         builder.setNegativeButton(R.string.alertdialog_nao, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(CarrinhoActivity.this, "Operação cancelada!", Toast.LENGTH_SHORT).show();
             }
         });
-
         builder.show();
     }
-
     private void adExcluirItem(String titulo, String mensagem, final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(titulo);
         builder.setMessage(mensagem);
-
         builder.setPositiveButton(R.string.alertdialog_sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 AppSetup.carrinho.remove(position);
                 Toast.makeText(CarrinhoActivity.this, "Produto removido!", Toast.LENGTH_SHORT).show();
-
                 atualizaView();
                 atualizaEstoque(position);
             }
         });
-
         builder.show();
     }
 
@@ -289,7 +225,6 @@ public class CarrinhoActivity extends AppCompatActivity {
             atualizaView();
         }
 
-        //copia o carrinho para usar na att do estoque
         itens = new ArrayList<>();
         itens.addAll(AppSetup.carrinho);
     }
