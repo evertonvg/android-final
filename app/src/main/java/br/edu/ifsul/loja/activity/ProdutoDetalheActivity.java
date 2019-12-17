@@ -60,7 +60,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("produtos/" + produto.getKey() + "/quantidade");
+        DatabaseReference myRef = database.getReference("vendas/produtos/" + produto.getKey() + "/quantidade");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,7 +95,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                             itemPedido.setSituacao(true);
                             AppSetup.carrinho.add(itemPedido);
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef2 = database.getReference("produtos/" + produto.getKey() + "/quantidade");
+                            DatabaseReference myRef2 = database.getReference("vendas/produtos/" + produto.getKey() + "/quantidade");
                             myRef2.setValue(AppSetup.produtos.get(position).getQuantidade() - itemPedido.getQuantidade());
                             Toast.makeText(ProdutoDetalheActivity.this, "Item adicionado ao carrinho", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));

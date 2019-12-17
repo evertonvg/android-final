@@ -50,7 +50,7 @@ public class ClientesActivity extends AppCompatActivity {
             }
         });
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("clientes");
+        DatabaseReference myRef = database.getReference("vendas/clientes");
         myRef.orderByChild("nome").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

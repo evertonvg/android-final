@@ -88,7 +88,7 @@ public class CriarUsuarioActivity extends AppCompatActivity {
         user.setNome(nome);
         user.setSobrenome(sobrenome);
         user.setEmail(mAuth.getCurrentUser().getEmail());
-        FirebaseDatabase.getInstance().getReference().child("usuarios").child(user.getFirebaseUser().getUid()).setValue(user);
+        FirebaseDatabase.getInstance().getReference().child("vendas").child("usuarios").child(user.getFirebaseUser().getUid()).setValue(user);
         AppSetup.user = user;
         Toast.makeText(CriarUsuarioActivity.this, "Usuário Criado com sucesso com E-mail: ." + user.getEmail(), Toast.LENGTH_SHORT).show();
     }

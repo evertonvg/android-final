@@ -124,7 +124,7 @@ public class ClienteAdminActivity extends AppCompatActivity {
     }
 
     private void searchDb(Long codigoDeBarras){
-        DatabaseReference myRef = database.getReference("clientes/");
+        DatabaseReference myRef = database.getReference("vendas/clientes/");
         Query query = myRef.orderByChild("codigoDeBarras").equalTo(codigoDeBarras).limitToFirst(1);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

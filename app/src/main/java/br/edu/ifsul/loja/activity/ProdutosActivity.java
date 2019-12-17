@@ -56,7 +56,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         TextView tvUsuarioNome = headerMain.findViewById(R.id.tvNomeUsuario);
         tvUsuarioEmail.setText(AppSetup.user.getEmail());
         tvUsuarioNome.setText(AppSetup.user.getNome());
-        if (AppSetup.user.getFuncao().equals("Administrador")){
+        if (AppSetup.user.getFuncao().equals("admin")){
             navigationView.getMenu().findItem(R.id.admGroup).setVisible(true);
         }
         lvProdutos = findViewById(R.id.lv_usuarios);
@@ -69,7 +69,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             }
         });
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("produtos");
+        DatabaseReference myRef = database.getReference().child("vendas").child("produtos");
         myRef.orderByChild("nome").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

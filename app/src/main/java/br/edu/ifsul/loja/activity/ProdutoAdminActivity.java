@@ -138,7 +138,7 @@ public class ProdutoAdminActivity extends AppCompatActivity {
 
     private void salvarProduto(){
         if(flagInsertOrUpdate){//insert
-            DatabaseReference myRef = database.getReference("/produtos");
+            DatabaseReference myRef = database.getReference("vendas/produtos");
             Log.d(TAG, "Barcode = " + produto.getCodigoDeBarras());
             Query query = myRef.orderByChild("codigoDeBarras").equalTo(produto.getCodigoDeBarras()).limitToFirst(1);
             query.addListenerForSingleValueEvent(new ValueEventListener() {

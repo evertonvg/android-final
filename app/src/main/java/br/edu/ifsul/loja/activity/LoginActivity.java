@@ -19,6 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.Objects;
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.model.Usuario;
@@ -80,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        obterToken();
     }
 
     private void signin(String email, String senha){
@@ -121,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setUserSessao(final FirebaseUser firebaseUser) {
-        FirebaseDatabase.getInstance().getReference().child("usuarios/").child(firebaseUser.getUid()).addListenerForSingleValueEvent (new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("vendas").child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 AppSetup.user = dataSnapshot.getValue(Usuario.class);
@@ -134,5 +139,21 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, getString(R.string.toast_problemas_signin), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void obterToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        Log.d(TAG, task.getResult().getToken());
+
+                    }
+                });
     }
 }

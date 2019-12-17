@@ -111,7 +111,7 @@ public class UserAdminActivity extends AppCompatActivity {
         usuario.setSobrenome(etSobrenomeuser.getText().toString());
         usuario.setFuncao(FUNCAO[spFuncaoUser.getSelectedItemPosition()]);
         usuario.setEmail(mAuth.getCurrentUser().getEmail());
-        FirebaseDatabase.getInstance().getReference().child("usuarios/").child(usuario.getFirebaseUser().getUid()).setValue(usuario)
+        FirebaseDatabase.getInstance().getReference().child("vendas").child("usuarios").child(usuario.getFirebaseUser().getUid()).setValue(usuario)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

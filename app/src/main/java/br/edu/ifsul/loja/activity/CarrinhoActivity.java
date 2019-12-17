@@ -120,7 +120,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void atualizaEstoque(final int position){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("produtos/").child(itens.get(position).getProduto().getKey()).child("quantidade");
+        final DatabaseReference myRef = database.getReference("vendas/produtos/").child(itens.get(position).getProduto().getKey()).child("quantidade");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -142,7 +142,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("pedidos/");
+                DatabaseReference myRef = database.getReference("vendas/pedidos/");
                 String data = geraData();
                 Pedido pedido = new Pedido();
                 pedido.setFormaDePagamento("espécie");

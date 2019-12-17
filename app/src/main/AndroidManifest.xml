@@ -70,7 +70,7 @@
         <activity
             android:name="br.edu.ifsul.loja.barcode.BarcodeCaptureActivity"
             android:label="Leitor de Barcode" />
-        <service android:name=".services.Messaging">
+        <service android:name=".service.cloudMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

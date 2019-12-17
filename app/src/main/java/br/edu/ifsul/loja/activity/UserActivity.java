@@ -38,7 +38,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("usuarios/");
+        DatabaseReference myRef = database.getReference("vendas/usuarios/");
         myRef.orderByChild("nome").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
